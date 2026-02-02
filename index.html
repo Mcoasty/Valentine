@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine?</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #fce4ec; 
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+            touch-action: none; /* Prevents scrolling on mobile while chasing the button */
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 85%;
+            position: relative;
+            min-height: 400px;
+        }
+
+        .cat-gif {
+            width: 150px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 22px;
+            margin-bottom: 30px;
+            line-height: 1.4;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            height: 100px;
+        }
+
+        button {
+            padding: 12px 28px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            z-index: 10;
+        }
+
+        #yesBtn {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        #noBtn {
+            background-color: #eeeeee;
+            color: #757575;
+            position: absolute;
+        }
+
+        .celebration {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .fireworks-gif {
+            width: 100%;
+            border-radius: 15px;
+            margin-top: 15px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        small {
+            color: #633c3c;
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container" id="mainContainer">
+        <div id="askSection">
+            <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGxjemU0M2dwbWZ6MDAxanYwanFibW52Zjk2N2p2eGU1eGxkamFpZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/8QbwUh40Hl96yMgvOx/giphy.gif" alt="Cute Cat" class="cat-gif">
+            
+            <h1>Monicah, will you be my Valentine?</h1>
+            <div class="btn-group">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+            <small><b>"No" seems a bit shy 😉</b></small>
+        </div>
+
+        <div id="celebrationSection" class="celebration">
+            <h1 style="color: #ff4081; margin-bottom: 5px;">YAY! 🎉</h1>
+            <p style="font-style: italic; color: #555;">"Unanifaa..."</p>
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExa2dlMGttcm51a3YwaXo5OHFwNG4xZnpoaWtkMXd2dGpuOG9qbjdybCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/KD1D49tK4Hvl6E5q1T/giphy.gif" alt="Success" class="fireworks-gif">
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const askSection = document.getElementById('askSection');
+        const celebrationSection = document.getElementById('celebrationSection');
+        const music = document.getElementById('bgMusic');
+
+        // Function to handle music playback
+        function playMusic() {
+            music.play().catch(() => {
+                console.log("Waiting for user interaction to play music...");
+            });
+        }
+
+        // Logic for the "No" button to move away
+        const moveButton = () => {
+            playMusic(); // Music starts playing as soon as they try to click "No"
+            
+            const container = document.getElementById('mainContainer');
+            const rect = container.getBoundingClientRect();
+            
+            // Calculate boundaries within the white box
+            const maxX = rect.width - noBtn.offsetWidth - 20;
+            const maxY = rect.height - noBtn.offsetHeight - 20;
+
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        };
+
+        noBtn.addEventListener('mouseover', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault(); // Prevents clicking on mobile
+            moveButton();
+        });
+
+        // Logic for clicking "Yes"
+        yesBtn.addEventListener('click', () => {
+            playMusic();
+            askSection.style.display = 'none';
+            celebrationSection.style.display = 'block';
+        });
+    </script>
+</body>
+</html>
